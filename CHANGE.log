@@ -18,7 +18,16 @@
   - Add read user and password from file (14:22 WIB)
   - Fix error encoding (18:55 WIB)
   - Add check is required arguments (23:12 WIB)
-  
+
   - First upload (2020-09-23 18:34 WIB)
   - Add README (2020-09-23 18:37 WIB)
 
+# BruteME v0.1
+   Building (2020-09-23) - days 5
+   - Building plugin MYSQL (18:20 WIB)
+   - Add plugin MYSQL (20:22 WIB)
+
+   Building (2020-09-24) - days 6
+   - Building plugin FTP (06:32 WIB)
+   - Add plugin FTP (07:06 WIB)
+   - Fix bug hostname (07:58 WIB)
