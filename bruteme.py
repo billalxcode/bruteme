@@ -9,6 +9,11 @@ from optparse import OptionParser
 from plugin.zip import Zip
 from plugin.rar import Rar
 from plugin.ssh import SSH
+from plugin.mysql import MYSQL
+from plugin.ftp import FTP
+
+# Local Plugin
+from common.banners import logo
 
 class BruteMe:
     def __init__(self):
@@ -186,7 +191,7 @@ class BruteMe:
                     except TypeError:
                         print ("[!] User: Failed to read the file, please use '-b' to change to byte mode")
                         sys.exit()
-            print ("[*] Done, total word: %d" % (count))    
+            print ("[*] Done, total word: %d" % (count))
         else:
             print ("[!] User or Pass must be set")
             sys.exit()
@@ -219,14 +224,37 @@ class BruteMe:
                 rar.crack()
             elif self.opt.mode == "ssh":
                 self.readUserPass()
-                
+
                 ssh = SSH()
-                ssh.setHostPort(self.opt.hostname)
+                if self.opt.hostname: ssh.setHostPort(self.opt.hostname); sys.exit()
+                else: print ("[-] Hostname are needed, please set the hostname")
                 ssh.setTimeout(self.opt.timeout)
                 ssh.setLog(self.log)
                 ssh.setUser(self.user)
                 ssh.setPass(self.pasw)
                 ssh.crack()
+            elif self.opt.mode == "mysql":
+                self.readUserPass()
+
+                mysql = MYSQL()
+                if self.opt.hostname: mysql.setHostPort(self.opt.hostname)
+                else: print ("[-] Hostname are needed, please set the hostname"); sys.exit()
+                mysql.setTimeout(self.opt.timeout)
+                mysql.setLog(self.log)
+                mysql.setUser(self.user)
+                mysql.setPass(self.pasw)
+                mysql.crack()
+            elif self.opt.mode == "ftp":
+                self.readUserPass()
+
+                ftp = FTP()
+                if self.opt.Hostname: ftp.setHostPort(self.opt.hostname)
+                else: print ("[-] Hostname are needed, please set the hostname"); sys.exit()
+                ftp.setTimeout(self.opt.timeout)
+                ftp.setLog(self.log)
+                ftp.setUser(self.user)
+                ftp.setPass(self.pasw)
+                ftp.crack()
         else:
             print ("[!] Mode required")
             sys.exit()
@@ -261,8 +289,9 @@ class BruteMe:
             print ("[-] Please input argument")
 
     def main(self):
+        logo()
         parser = OptionParser()
-        parser.add_option("-m", "--mode", dest="mode", help="Set mode [zip,rar,hash]", action="store")
+        parser.add_option("-m", "--mode", dest="mode", help="Set mode [zip,rar,mysql]", action="store")
         parser.add_option("-w", "--wordlist", dest="wordlist", help="Set wordlist from file", action="store")
         parser.add_option("-f", "--file", dest="file", help="Set file", action="store")
         parser.add_option("-b", "--byte", dest="byte", help="Use encoding to read Wordlist", action="store_true")
@@ -279,5 +308,9 @@ class BruteMe:
         self.parseArgs()
 
 if __name__ == "__main__":
-    brute = BruteMe()
-    brute.main()
+    try:
+        brute = BruteMe()
+        brute.main()
+    except KeyboardInterrupt:
+        print ("\n[-] User exit")
+        sys.exit()
